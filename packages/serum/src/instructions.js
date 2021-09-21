@@ -186,7 +186,7 @@ export class DexInstructions {
     orderType,
     clientId,
     programId,
-    feeDiscountPubkey = null,
+    feeDiscountPubkey,
   }) {
     const keys = [
       { pubkey: market, isSigner: false, isWritable: true },
@@ -236,7 +236,7 @@ export class DexInstructions {
     clientId,
     programId,
     selfTradeBehavior,
-    feeDiscountPubkey = null,
+    feeDiscountPubkey,
   }) {
     const keys = [
       { pubkey: market, isSigner: false, isWritable: true },
@@ -439,7 +439,7 @@ export class DexInstructions {
     quoteWallet,
     vaultSigner,
     programId,
-    referrerQuoteWallet = null,
+    referrerQuoteWallet,
   }) {
     const keys = [
       { pubkey: market, isSigner: false, isWritable: true },

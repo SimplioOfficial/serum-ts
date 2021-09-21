@@ -432,20 +432,19 @@ export class Market {
       feeDiscountPubkey,
     }: OrderParams,
   ) {
-    const { transaction, signers } = await this.makePlaceOrderTransaction<
-      Account
-    >(connection, {
-      owner,
-      payer,
-      side,
-      price,
-      size,
-      orderType,
-      clientId,
-      openOrdersAddressKey,
-      openOrdersAccount,
-      feeDiscountPubkey,
-    });
+    const { transaction, signers } =
+      await this.makePlaceOrderTransaction<Account>(connection, {
+        owner,
+        payer,
+        side,
+        price,
+        size,
+        orderType,
+        clientId,
+        openOrdersAddressKey,
+        openOrdersAccount,
+        feeDiscountPubkey,
+      });
     return await this._sendTransaction(connection, transaction, [
       owner,
       ...signers,
@@ -1570,22 +1569,17 @@ async function getFilteredProgramAccounts(
   filters,
 ): Promise<{ publicKey: PublicKey; accountInfo: AccountInfo<Buffer> }[]> {
   // @ts-ignore
-  const resp = await connection._rpcRequest('getProgramAccounts', [
-    programId.toBase58(),
-    {
-      commitment: connection.commitment,
-      filters,
-      encoding: 'base64',
-    },
-  ]);
-  if (resp.error) {
-    throw new Error(resp.error.message);
-  }
-  return resp.result.map(
+  const resp = await connection.getProgramAccounts(programId, {
+    commitment: connection.commitment,
+    filters,
+    encoding: 'base64',
+  });
+
+  return resp.map(
     ({ pubkey, account: { data, executable, owner, lamports } }) => ({
       publicKey: new PublicKey(pubkey),
       accountInfo: {
-        data: Buffer.from(data[0], 'base64'),
+        data,
         executable,
         owner: new PublicKey(owner),
         lamports,
